@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: Restaurant-API-Gateway
+  cloud:
+    discovery:
+      enabled: true
+    loadbalancer:
+      enabled: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: Restaurant-Service
+          uri: lb://restaurant-service
+          predicates:
+            - Path=/restaurant/**
+          filters:
+            - AuthFilter
+            - StripPrefix=1
+        - id: Restaurant-Orders
+          uri: lb://restaurant-order
+          predicates:
+            - Path=/restaurant-order/**
+          filters:
+            - AuthFilter
+            - StripPrefix=1
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/user/h2-console/**]':
+            allowedOrigins:
+              - "null"
+              - "http://localhost:8079"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "Origin"
+              - "Content-Type"
+              - "Accept"
+              - "Authorization"
+            allowCredentials: true
+            maxAge: 3600
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3007"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - Content-Type
+              - Authorization
+              - Accept
+              - Origin
+            allowCredentials: true
+            maxAge: 3600
+  profiles:
+    active: local
+server:
+  port: 8079
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
