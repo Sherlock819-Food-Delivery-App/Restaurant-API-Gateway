@@ -33,7 +33,7 @@ spring:
         cors-configurations:
           '[/user/h2-console/**]':
             allowedOrigins:
-              - "null"
+              - "http://localhost:8080"
               - "http://localhost:8079"
             allowedMethods:
               - GET
@@ -51,6 +51,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - "http://localhost:3007"
+              - "http://localhost:3008"
             allowedMethods:
               - GET
               - POST

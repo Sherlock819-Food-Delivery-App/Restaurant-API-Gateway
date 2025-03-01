@@ -6,6 +6,3 @@ WORKDIR /app
 
 # Copy the current directory contents into the container at /app
 COPY target/Restaurant-API-Gateway-0.0.1-SNAPSHOT.jar /app/target/Restaurant-API-Gateway-0.0.1-SNAPSHOT.jar
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "target/Restaurant-API-Gateway-0.0.1-SNAPSHOT.jar"]
